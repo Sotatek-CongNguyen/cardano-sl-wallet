@@ -11,6 +11,8 @@ RUN apt-get update &&\
    echo binary-cache-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= >> /etc/nix/nix.conf &&\
    su - cardano -c 'git clone https://github.com/input-output-hk/cardano-sl.git /home/cardano/cardano-sl'
 
+RUN cat /etc/nix/nix.conf
+
 ADD default.conf /etc/nginx/conf.d/
 
 ADD start-cardano-container.sh /home/cardano/cardano-sl/
