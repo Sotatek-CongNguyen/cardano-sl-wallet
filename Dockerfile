@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN apt-get update &&\
-   apt-get install -y git curl bzip2 nginx sudo nano &&\
+   apt-get install -y git curl bzip2 nginx sudo nano xz-utils &&\
    useradd -ms /bin/bash cardano &&\
    mkdir -m 0755 /nix &&\
    chown cardano /nix &&\
