@@ -27,6 +27,6 @@ RUN curl https://nixos.org/nix/install | sh
 WORKDIR /home/cardano/cardano-sl
 RUN git checkout tags/3.2.0
 RUN . /home/cardano/.nix-profile/etc/profile.d/nix.sh &&\
-   nix-build -A connectScripts.testnet.wallet -o connect-to-testnet
+   nix-build -A connectScripts.mainnet.wallet -o connect-to-mainnet
     
-CMD /home/cardano/cardano-sl/start-test-cardano-container.sh
+CMD /home/cardano/cardano-sl/start-cardano-container.sh

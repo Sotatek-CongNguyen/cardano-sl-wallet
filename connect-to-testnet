@@ -1,0 +1,50 @@
+#!/nix/store/zqh3l3lyw32q1ayb15bnvg9f24j5v2p0-bash-4.4-p12/bin/bash -e
+
+if [[ "$1" == "--delete-state" ]]; then
+  echo "Deleting state-wallet-testnet ... "
+  rm -Rf state-wallet-testnet
+  shift
+fi
+if [[ "$1" == "--runtime-args" ]]; then
+  RUNTIME_ARGS=$2
+  shift 2
+else
+  RUNTIME_ARGS=""
+fi
+
+echo "Keeping state in state-wallet-testnet"
+mkdir -p state-wallet-testnet/logs
+
+echo "Launching a node connected to 'testnet' ..."
+export LC_ALL=en_GB.UTF-8
+export LANG=en_GB.UTF-8
+if [ ! -d state-wallet-testnet/tls ]; then
+  mkdir -p state-wallet-testnet/tls/server && mkdir -p state-wallet-testnet/tls/client
+  /nix/store/q6ji7sdkrw00cdmqvcxdi41xsab5v9f5-cardano-sl-tools-1.3.0/bin/cardano-x509-certificates   \
+    --server-out-dir state-wallet-testnet/tls/server                    \
+    --clients-out-dir state-wallet-testnet/tls/client                   \
+    --configuration-key testnet_full \
+    --configuration-file /nix/store/49jpvj5znnnbw2b326bc7dbcvhsfpm13-cardano-sl-config/lib/configuration.yaml
+fi
+
+
+exec /nix/store/g1z2splkx9wb0sgyj1yn8gba1f4ic3sg-cardano-sl-wallet-new-1.3.0/bin/cardano-node                                     \
+  --configuration-file /nix/store/49jpvj5znnnbw2b326bc7dbcvhsfpm13-cardano-sl-config/lib/configuration.yaml \
+  --configuration-key testnet_full     \
+  --tlscert state-wallet-testnet/tls/server/server.crt     \
+  --tlskey state-wallet-testnet/tls/server/server.key      \
+  --tlsca state-wallet-testnet/tls/server/ca.crt           \
+  --log-config /nix/store/49jpvj5znnnbw2b326bc7dbcvhsfpm13-cardano-sl-config/log-configs/connect-to-cluster.yaml \
+  --topology "/nix/store/qslalll5z2cyf7cl9ysiv6by4g6arvfx-topology-testnet" \
+  --logs-prefix "state-wallet-testnet/logs"                               \
+  --db-path "state-wallet-testnet/db"                       \
+  --wallet-db-path 'state-wallet-testnet/wallet-db'        \
+                                     \
+                       \
+  --keyfile state-wallet-testnet/secret.key                               \
+  --wallet-address localhost:8090               \
+  --wallet-doc-address localhost:8091        \
+  --ekg-server localhost:8000 --metrics                            \
+  +RTS -N2 -qg -A1m -I0 -T -RTS                                    \
+                                            \
+  $RUNTIME_ARGS
