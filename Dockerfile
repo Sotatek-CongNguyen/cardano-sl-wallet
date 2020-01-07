@@ -13,10 +13,10 @@ RUN apt-get update &&\
 
 RUN cat /etc/nix/nix.conf
 
-ADD default.conf /etc/nginx/conf.d/
+ADD testnet.conf /etc/nginx/conf.d/
 
-ADD start-cardano-container.sh /home/cardano/cardano-sl/
-RUN chmod a+x /home/cardano/cardano-sl/start-cardano-container.sh
+ADD start-test-cardano-container.sh /home/cardano/cardano-sl/
+RUN chmod a+x /home/cardano/cardano-sl/start-test-cardano-container.sh
 
 RUN echo "cardano ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
