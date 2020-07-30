@@ -14,8 +14,11 @@ RUN apt-get update &&\
 RUN cat /etc/nix/nix.conf
 
 ADD testnet.conf /etc/nginx/conf.d/
+ADD default.conf /etc/nginx/conf.d/
 
-ADD start-test-cardano-container.sh /home/cardano/cardano-sl/
+ADD start-testnet-cardano-container.sh /home/cardano/cardano-sl/
+ADD start-cardano-container.sh /home/cardano/cardano-sl/
+
 RUN chmod a+x /home/cardano/cardano-sl/start-test-cardano-container.sh
 
 RUN echo "cardano ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -28,5 +31,5 @@ WORKDIR /home/cardano/cardano-sl
 RUN git checkout tags/3.2.0
 RUN . /home/cardano/.nix-profile/etc/profile.d/nix.sh &&\
    nix-build -A connectScripts.testnet.wallet -o connect-to-testnet
-    
+
 CMD /home/cardano/cardano-sl/start-test-cardano-container.sh

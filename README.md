@@ -4,6 +4,6 @@ For more informations read https://cardanodocs.com/introduction/
 
 docker build -t wallet .
 
-docker run --rm -d -p 8090:80 -v cardano-data:/home/cardano/cardano-sl/state-wallet-testnet wallet
+docker run -d -p 8090:80 -v cardano-data:/home/cardano/cardano-sl/state-wallet-testnet wallet
 
-docker run --rm -d -p 8090:80 -v cardano-data:/home/cardano/cardano-sl/state-wallet-mainnet wallet
+docker run -d -p 8090:80 -v cardano-data:/home/cardano/cardano-sl/state-wallet-mainnet wallet
